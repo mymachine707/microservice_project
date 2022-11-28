@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "./tutorial";
+
+// The service definition.
+service Tutorial {
+    // Sends a RollDice
+    rpc RollDice (RollDiceRequest) returns (RollDiceReply) {}
+}
+  
+// The request message containing the user's name.
+message RollDiceRequest {
+    int32 num = 1;
+}
+  
+// The response message containing the greetings
+message RollDiceReply {
+    repeated string dice = 1;
+}
