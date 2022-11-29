@@ -2,9 +2,9 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.6.1
-// source: dice.proto
+// source: protos/dice.proto
 
-package tutorial
+package dice
 
 import (
 	context "context"
@@ -23,7 +23,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TutorialClient interface {
 	// Sends a RollDice
-	RollDice(ctx context.Context, in *RollDiceRequest, opts ...grpc.CallOption) (*RollDiceReply, error)
+	RollDice(ctx context.Context, in *RollDiceRequest, opts ...grpc.CallOption) (*RollDiceResponse, error)
 }
 
 type tutorialClient struct {
@@ -34,8 +34,8 @@ func NewTutorialClient(cc grpc.ClientConnInterface) TutorialClient {
 	return &tutorialClient{cc}
 }
 
-func (c *tutorialClient) RollDice(ctx context.Context, in *RollDiceRequest, opts ...grpc.CallOption) (*RollDiceReply, error) {
-	out := new(RollDiceReply)
+func (c *tutorialClient) RollDice(ctx context.Context, in *RollDiceRequest, opts ...grpc.CallOption) (*RollDiceResponse, error) {
+	out := new(RollDiceResponse)
 	err := c.cc.Invoke(ctx, "/Tutorial/RollDice", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -48,7 +48,7 @@ func (c *tutorialClient) RollDice(ctx context.Context, in *RollDiceRequest, opts
 // for forward compatibility
 type TutorialServer interface {
 	// Sends a RollDice
-	RollDice(context.Context, *RollDiceRequest) (*RollDiceReply, error)
+	RollDice(context.Context, *RollDiceRequest) (*RollDiceResponse, error)
 	mustEmbedUnimplementedTutorialServer()
 }
 
@@ -56,7 +56,7 @@ type TutorialServer interface {
 type UnimplementedTutorialServer struct {
 }
 
-func (UnimplementedTutorialServer) RollDice(context.Context, *RollDiceRequest) (*RollDiceReply, error) {
+func (UnimplementedTutorialServer) RollDice(context.Context, *RollDiceRequest) (*RollDiceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RollDice not implemented")
 }
 func (UnimplementedTutorialServer) mustEmbedUnimplementedTutorialServer() {}
@@ -103,5 +103,5 @@ var Tutorial_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "dice.proto",
+	Metadata: "protos/dice.proto",
 }
