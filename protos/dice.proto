@@ -10,10 +10,10 @@ service Tutorial {
   
 // The request message containing the user's name.
 message RollDiceRequest {
-    int32 num = 1;
+    int32  num = 1;
 }
   
 // The response message containing the greetings
 message RollDiceResponse {
-    repeated string dice = 1;
+    repeated int32 dice = 1;
 }

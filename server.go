@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"math/rand"
 	"microservice_project/proto-gen/dice"
 	"net"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 )
 
 // TutorialService is a struct that implements the server interface
@@ -17,8 +19,18 @@ type TutorialService struct {
 }
 
 func (s *TutorialService) RollDice(ctx context.Context, req *dice.RollDiceRequest) (*dice.RollDiceResponse, error) {
-	fmt.Printf("req -----> %#+v", req)
-	return nil, nil
+	var res dice.RollDiceResponse
+
+	if req.Num < 0 {
+		return nil, grpc.Errorf(codes.InvalidArgument, "number should be positive")
+	}
+
+	for i := 0; i < int(req.Num); i++ {
+		res.Dice = append(res.Dice, int32(rand.Intn(100)))
+		fmt.Println(rand.Intn(100))
+	}
+
+	return &res, nil
 }
 
 func main() {
