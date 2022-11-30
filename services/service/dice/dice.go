@@ -2,6 +2,7 @@ package dice
 
 import (
 	"context"
+	"log"
 	"math/rand"
 	"microservice_project/proto-gen/dice"
 
@@ -30,7 +31,15 @@ func (s *TutorialService) RollDice(ctx context.Context, req *dice.RollDiceReques
 }
 
 func (s *TutorialService) Ping(ctx context.Context, req *dice.Empty) (*dice.Pong, error) {
+	log.Println("Ping")
 	return &dice.Pong{
 		Message: "Ok",
+	}, nil
+}
+
+func (s *TutorialService) Pass(ctx context.Context, req *dice.Empty1) (*dice.Hello, error) {
+	log.Println("pass")
+	return &dice.Hello{
+		Message: "Hello",
 	}, nil
 }

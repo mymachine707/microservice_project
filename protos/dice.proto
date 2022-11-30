@@ -7,6 +7,10 @@ service Tutorial {
     // HelloMethod ...
     rpc Ping (Empty) returns (Pong) {}
   
+
+     // HelloMethod ...
+     rpc Pass (Empty1) returns (Hello) {}
+  
     // Sends a RollDice
     rpc RollDice (RollDiceRequest) returns (RollDiceResponse) {}
 
@@ -19,6 +23,14 @@ message Empty {
 message Pong {
     string message = 1;
 }
+
+message Empty1 {
+}
+
+message Hello {
+    string message = 1;
+}
+
 // The request message containing the user's name.
 message RollDiceRequest {
     int32  num = 1;

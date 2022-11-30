@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type TutorialClient interface {
 	// HelloMethod ...
 	Ping(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Pong, error)
+	// HelloMethod ...
+	Pass(ctx context.Context, in *Empty1, opts ...grpc.CallOption) (*Hello, error)
 	// Sends a RollDice
 	RollDice(ctx context.Context, in *RollDiceRequest, opts ...grpc.CallOption) (*RollDiceResponse, error)
 }
@@ -45,6 +47,15 @@ func (c *tutorialClient) Ping(ctx context.Context, in *Empty, opts ...grpc.CallO
 	return out, nil
 }
 
+func (c *tutorialClient) Pass(ctx context.Context, in *Empty1, opts ...grpc.CallOption) (*Hello, error) {
+	out := new(Hello)
+	err := c.cc.Invoke(ctx, "/Tutorial/Pass", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *tutorialClient) RollDice(ctx context.Context, in *RollDiceRequest, opts ...grpc.CallOption) (*RollDiceResponse, error) {
 	out := new(RollDiceResponse)
 	err := c.cc.Invoke(ctx, "/Tutorial/RollDice", in, out, opts...)
@@ -60,6 +71,8 @@ func (c *tutorialClient) RollDice(ctx context.Context, in *RollDiceRequest, opts
 type TutorialServer interface {
 	// HelloMethod ...
 	Ping(context.Context, *Empty) (*Pong, error)
+	// HelloMethod ...
+	Pass(context.Context, *Empty1) (*Hello, error)
 	// Sends a RollDice
 	RollDice(context.Context, *RollDiceRequest) (*RollDiceResponse, error)
 	mustEmbedUnimplementedTutorialServer()
@@ -71,6 +84,9 @@ type UnimplementedTutorialServer struct {
 
 func (UnimplementedTutorialServer) Ping(context.Context, *Empty) (*Pong, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
+}
+func (UnimplementedTutorialServer) Pass(context.Context, *Empty1) (*Hello, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Pass not implemented")
 }
 func (UnimplementedTutorialServer) RollDice(context.Context, *RollDiceRequest) (*RollDiceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RollDice not implemented")
@@ -106,6 +122,24 @@ func _Tutorial_Ping_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Tutorial_Pass_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty1)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TutorialServer).Pass(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Tutorial/Pass",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TutorialServer).Pass(ctx, req.(*Empty1))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Tutorial_RollDice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(RollDiceRequest)
 	if err := dec(in); err != nil {
@@ -134,6 +168,10 @@ var Tutorial_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Ping",
 			Handler:    _Tutorial_Ping_Handler,
+		},
+		{
+			MethodName: "Pass",
+			Handler:    _Tutorial_Pass_Handler,
 		},
 		{
 			MethodName: "RollDice",

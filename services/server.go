@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"microservice_project/proto-gen/dice"
-	dService "microservice_project/service/dice"
+	dService "microservice_project/services/service/dice"
 	"net"
 
 	"google.golang.org/grpc"
