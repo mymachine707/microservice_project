@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"math/rand"
 	"microservice_project/proto-gen/dice"
@@ -27,7 +26,6 @@ func (s *TutorialService) RollDice(ctx context.Context, req *dice.RollDiceReques
 
 	for i := 0; i < int(req.Num); i++ {
 		res.Dice = append(res.Dice, int32(rand.Intn(100)))
-		fmt.Println(rand.Intn(100))
 	}
 
 	return &res, nil
